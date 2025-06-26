@@ -1,6 +1,6 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
@@ -12,12 +12,31 @@ class ResultScreen extends StatelessWidget {
 
   ResultScreen({required this.result});
 
+  bool _isJson(String str) {
+    try {
+      json.decode(str);
+    } catch (e) {
+      return false;
+    }
+    return true;
+  }
+
+  String _formatJson(String jsonStr) {
+    try {
+      final parsedJson = json.decode(jsonStr);
+      const encoder = JsonEncoder.withIndent('  ');
+      return encoder.convert(parsedJson);
+    } catch (e) {
+      return jsonStr; // Return original string if parsing fails
+    }
+  }
+
   Future<void> _savePdf(BuildContext context) async {
     final pdf = pw.Document();
     pdf.addPage(
       pw.Page(
         build: (pw.Context context) {
-          return pw.Text(result);
+          return pw.Text(_isJson(result) ? _formatJson(result) : result);
         },
       ),
     );
@@ -41,23 +60,26 @@ class ResultScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Generated Document'),
+        title: const Text(
+          'Response',
+          style: TextStyle(fontSize: 15),
+        ),
         actions: [
           IconButton(
-            icon: Icon(Icons.copy),
+            icon: const Icon(Icons.copy),
             onPressed: () {
               Clipboard.setData(ClipboardData(text: result));
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Copied to clipboard')),
+                const SnackBar(content: Text('Copied to clipboard')),
               );
             },
           ),
           IconButton(
-            icon: Icon(Icons.picture_as_pdf),
+            icon: const Icon(Icons.picture_as_pdf),
             onPressed: () => _savePdf(context),
           ),
           IconButton(
-            icon: Icon(Icons.share),
+            icon: const Icon(Icons.share),
             onPressed: () {
               Share.share(result);
             },
@@ -67,7 +89,10 @@ class ResultScreen extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
-          child: Text(result),
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Text(_isJson(result) ? _formatJson(result) : result),
+          ),
         ),
       ),
     );

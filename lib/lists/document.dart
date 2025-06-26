@@ -25,4 +25,8 @@ final List<Document> documents = [
     name: 'Legacy Policy',
     imagePath: 'assets/images/legacyPolicy.jpeg',
   ),
+  Document(
+    name: 'Legal Template',
+    imagePath: 'assets/images/legal.jpeg',
+  ),
 ];

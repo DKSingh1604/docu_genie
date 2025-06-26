@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:docu_genie/colors.dart';
 import 'package:docu_genie/screens/home_screen.dart';
+import 'package:docu_genie/screens/info_screen.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -225,7 +226,7 @@ class _LoadingScreenState extends State<LoadingScreen>
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => HomeScreen(),
+          builder: (context) => InfoScreen(),
         ),
       );
     });
