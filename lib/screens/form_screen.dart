@@ -81,6 +81,51 @@ class _FormScreenState extends State<FormScreen> {
           TextEditingController();
       _controllers['Jurisdiction (e.g., State of California)'] =
           TextEditingController();
+    } else if (widget.document.name == 'Portfolio Blurb') {
+      _controllers['Full Name'] = TextEditingController();
+      _controllers['Primary Role/Title (e.g., Flutter Developer)'] =
+          TextEditingController();
+      _controllers['Key Skills (comma-separated)'] = TextEditingController();
+      _controllers['Years of Experience'] = TextEditingController();
+      _controllers['Key Projects or Achievements (Optional)'] =
+          TextEditingController();
+      _controllers[
+              'Unique Selling Proposition (e.g., Passion for accessibility)'] =
+          TextEditingController();
+      _controllers["Call to Action (e.g., View my work, Let's connect)"] =
+          TextEditingController();
+      _controllers['Desired Tone (e.g., Professional, Creative)'] =
+          TextEditingController();
+    } else if (widget.document.name == 'Bio') {
+      _controllers['Platform (e.g., Twitter, Instagram)'] =
+          TextEditingController();
+      _controllers['Full Name / Username'] = TextEditingController();
+      _controllers['Profession / Niche (e.g., Developer, Creator)'] =
+          TextEditingController();
+      _controllers['Key Interests or Topics (comma-separated)'] =
+          TextEditingController();
+      _controllers['What makes you unique? (Optional)'] =
+          TextEditingController();
+      _controllers['Call to Action / Link to include'] =
+          TextEditingController();
+      _controllers['Desired Tone (e.g., Witty, Professional)'] =
+          TextEditingController();
+      _controllers['Include Emojis? (Yes/No)'] = TextEditingController();
+    } else if (widget.document.name == 'Legacy Policy') {
+      _controllers['Full Name of Creator'] = TextEditingController();
+      _controllers["Executor's Full Name"] = TextEditingController();
+      _controllers[
+              'Digital Assets & Instructions (e.g., Social media, email)'] =
+          TextEditingController();
+      _controllers[
+              'Physical Assets & Instructions (e.g., Journals, collections)'] =
+          TextEditingController();
+      _controllers['Final Personal Statement (Optional)'] =
+          TextEditingController();
+      _controllers['Contact Info for Key People (Optional)'] =
+          TextEditingController();
+      _controllers['Desired Tone (e.g., Formal, Sentimental)'] =
+          TextEditingController();
     }
   }
 
@@ -191,7 +236,21 @@ class _FormScreenState extends State<FormScreen> {
                                 AlwaysStoppedAnimation<Color>(Colors.white),
                           ),
                         )
-                      : const Text('Generate', style: TextStyle(fontSize: 16)),
+                      : Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text(
+                              'Generate',
+                              style: TextStyle(fontSize: 16),
+                            ),
+                            const SizedBox(width: 10),
+                            Image.asset(
+                              'assets/images/aiGenerate1.png',
+                              width: 30,
+                              height: 30,
+                            ),
+                          ],
+                        ),
                 ),
               ),
             ],
@@ -248,7 +307,7 @@ Generate a professional and compelling internship application email with the fol
       prompt +=
           '6. Conclude with a strong call to action and a professional closing.\n';
       return prompt;
-    } else if (widget.document.name == 'Statement of Purpose') {
+    } else if (widget.document.name == 'SOP') {
       // Helper to build sections only if the corresponding controller has text.
       String buildSection(String title, String key) {
         final text = _controllers[key]!.text;
@@ -299,6 +358,97 @@ Generate a formal legal template in JSON format with the following details. The 
 - **Agreement Date:** ${_controllers['Agreement Date']!.text}
 - **Key Clauses:** ${_controllers['Key Clauses (comma-separated, e.g., Confidentiality, Termination)']!.text}
 - **Jurisdiction:** ${_controllers['Jurisdiction (e.g., State of California)']!.text}
+''';
+    } else if (widget.document.name == 'Portfolio Blurb') {
+      String buildSection(String title, String key) {
+        final text = _controllers[key]!.text;
+        return text.isNotEmpty ? '- **$title:** $text\n' : '';
+      }
+
+      return '''
+Generate a compelling and concise portfolio blurb based on the following details. The blurb should be perfect for a personal website, LinkedIn summary, or professional bio.
+
+### **Professional Profile**
+- **Full Name:** ${_controllers['Full Name']!.text}
+- **Primary Role/Title:** ${_controllers['Primary Role/Title (e.g., Flutter Developer)']!.text}
+- **Years of Experience:** ${_controllers['Years of Experience']!.text}
+- **Key Skills:** ${_controllers['Key Skills (comma-separated)']!.text}
+${buildSection('Key Projects or Achievements', 'Key Projects or Achievements (Optional)')}
+- **Unique Selling Proposition:** ${_controllers['Unique Selling Proposition (e.g., Passion for accessibility)']!.text}
+
+### **Tone & Objective**
+- **Desired Tone:** ${_controllers['Desired Tone (e.g., Professional, Creative)']!.text}
+- **Call to Action:** ${_controllers["Call to Action (e.g., View my work, Let's connect)"]!.text}
+
+**Instructions for the AI:**
+1.  Craft a short, engaging paragraph (2-4 sentences) that summarizes the user's professional identity.
+2.  Seamlessly integrate the key skills and unique selling proposition into the narrative.
+3.  Conclude with the specified call to action.
+4.  Maintain the desired tone throughout the blurb.
+''';
+    } else if (widget.document.name == 'Bio') {
+      String buildSection(String title, String key) {
+        final text = _controllers[key]!.text;
+        return text.isNotEmpty ? '- **$title:** $text\n' : '';
+      }
+
+      return '''
+Generate a compelling and concise social media bio for the specified platform. The bio should be engaging, reflect the user's personality, and fit within typical character limits.
+
+### **User Profile**
+- **Platform:** ${_controllers['Platform (e.g., Twitter, Instagram)']!.text}
+- **Full Name / Username:** ${_controllers['Full Name / Username']!.text}
+- **Profession / Niche:** ${_controllers['Profession / Niche (e.g., Developer, Creator)']!.text}
+- **Key Interests or Topics:** ${_controllers['Key Interests or Topics (comma-separated)']!.text}
+${buildSection('Unique Selling Point', 'What makes you unique? (Optional)')}
+
+### **Bio Objective**
+- **Call to Action / Link:** ${_controllers['Call to Action / Link to include']!.text}
+- **Desired Tone:** ${_controllers['Desired Tone (e.g., Witty, Professional)']!.text}
+- **Include Emojis?:** ${_controllers['Include Emojis? (Yes/No)']!.text}
+
+**Instructions for the AI:**
+1.  Craft a bio that is tailored to the character limits and style of the specified platform (e.g., short and punchy for Twitter, more descriptive for Instagram).
+2.  Incorporate the user's profession, interests, and unique points into a captivating summary.
+3.  Use emojis appropriately if requested, to add personality.
+4.  End with a clear call to action or link.
+5.  Strictly adhere to the desired tone.
+''';
+    } else if (widget.document.name == 'Legacy Policy') {
+      String buildSection(String title, String key) {
+        final text = _controllers[key]!.text;
+        return text.isNotEmpty ? '- **$title:** $text\n' : '';
+      }
+
+      return '''
+Generate a clear, comprehensive, and well-structured Legacy Policy document based on the following details. The document should formally outline the creator's wishes for their assets and legacy.
+
+### **I. Declaration of Intent**
+- **Full Name of Creator:** ${_controllers['Full Name of Creator']!.text}
+- **Purpose:** This document outlines my wishes regarding the management and distribution of my digital and personal assets upon my passing.
+
+### **II. Appointment of Executor**
+- **Executor's Full Name:** ${_controllers["Executor's Full Name"]!.text}
+- **Responsibilities:** I entrust my Executor to carry out the instructions herein faithfully.
+
+### **III. Asset Disposition**
+- **Digital Assets & Instructions:**
+  ${_controllers['Digital Assets & Instructions (e.g., Social media, email)']!.text}
+
+- **Personal Assets & Instructions:**
+  ${_controllers['Physical Assets & Instructions (e.g., Journals, collections)']!.text}
+
+${buildSection('### IV. Contact Information for Key Individuals', 'Contact Info for Key People (Optional)')}
+${buildSection('### V. Final Personal Statement', 'Final Personal Statement (Optional)')}
+### **VI. Tone and Finalization**
+- **Desired Tone:** ${_controllers['Desired Tone (e.g., Formal, Sentimental)']!.text}
+
+**Instructions for the AI:**
+1.  Structure the output as a formal policy document with clear headings (e.g., "I. Declaration of Intent", "II. Appointment of Executor").
+2.  Present the asset instructions in a clear, itemized list format under the appropriate headings.
+3.  Incorporate the personal statement thoughtfully, if provided.
+4.  Maintain the specified tone throughout the entire document.
+5.  Conclude with a formal closing statement and signature lines for the creator and witnesses.
 ''';
     }
     return '';
