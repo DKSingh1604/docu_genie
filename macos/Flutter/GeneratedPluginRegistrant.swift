@@ -8,7 +8,7 @@ import Foundation
 import open_file_mac
 import path_provider_foundation
 import share_plus
-import sqflite_darwin
+import sqflite
 
 func RegisterGeneratedPlugins(registry: FlutterPluginRegistry) {
   OpenFilePlugin.register(with: registry.registrar(forPlugin: "OpenFilePlugin"))
