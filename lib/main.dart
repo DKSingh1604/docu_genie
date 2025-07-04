@@ -1,5 +1,6 @@
 import 'package:docu_genie/screens/home_screen.dart';
 import 'package:docu_genie/screens/splashScreen.dart';
+import 'package:docu_genie/screens/tipsAndGuide.dart';
 import 'package:flutter/material.dart';
 
 void main() {

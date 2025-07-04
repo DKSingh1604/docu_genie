@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:docu_genie/functions/functions.dart';
 import 'package:docu_genie/lists/document.dart';
 import 'package:docu_genie/screens/tipsAndGuide.dart';
@@ -20,7 +18,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    _pageController = PageController(viewportFraction: 0.8);
+    // Set initial page to a high value for infinite scroll effect
+    _pageController = PageController(viewportFraction: 0.8, initialPage: 1000);
     _pageController.addListener(() {
       setState(() {
         _currentPage = _pageController.page!;
@@ -76,13 +75,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 height: screenHeight * 0.55,
                 child: PageView.builder(
                   controller: _pageController,
-                  itemCount: documents.length,
+                  itemCount: 10000, // Large number for infinite effect
                   itemBuilder: (context, index) {
+                    final docIndex = index % documents.length;
                     final scale = (1 - (_currentPage - index).abs() * 0.2)
                         .clamp(0.8, 1.0);
                     return Transform.scale(
                       scale: scale,
-                      child: buildFeaturedCard(context, documents[index],
+                      child: buildFeaturedCard(context, documents[docIndex],
                           (doc) => Functions.navigateToForm(context, doc)),
                     );
                   },
@@ -107,20 +107,28 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    _buildQuickAccessButton(
-                        context, 'Recent Docs', Icons.history, () {}),
-                    _buildQuickAccessButton(context, 'Quick Access',
-                        Icons.dashboard_customize, () {}),
-                    _buildQuickAccessButton(
-                        // onTap: () {
-                        //   Navigator.push(context, MaterialPageRoute(builder: (context) {
-                        //     return const Tipsandguide();
-                        //   }));
-                        // },
-                        context,
-                        'Tips & Guide',
-                        Icons.lightbulb_outline,
-                        () {}),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: _buildQuickAccessButton(
+                            context, 'Recent Docs', Icons.history, () {}),
+                      ),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: _buildQuickAccessButton(
+                            context, 'Tips & Guide', Icons.lightbulb_outline,
+                            () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Tipsandguide(),
+                            ),
+                          );
+                        }),
+                      ),
+                    ),
                   ],
                 ),
               )

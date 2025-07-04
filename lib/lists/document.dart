@@ -9,7 +9,7 @@ final List<Document> documents = [
   ),
   Document(
     name: 'Internship Email',
-    imagePath: 'assets/images/internshipMail.jpg',
+    imagePath: 'assets/images/internshipMail.webp',
     description:
         'Write a professional email to apply for internships. Make a great first impression and highlight your qualifications.',
   ),
